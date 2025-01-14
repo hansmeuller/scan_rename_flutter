@@ -1,7 +1,7 @@
 # dart only
 *.dart linguist-detectable=true
 
-# Ignor rest
+# ignore rest
 ios/** linguist-vendored
 android/** linguist-vendored
 web/** linguist-vendored
