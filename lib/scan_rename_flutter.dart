@@ -115,7 +115,7 @@ Future<void> processPdf(String filePath) async {
   }
 }
 
-// current Ordner verarbeiten
+// current ordner verarbeiten
 void processPdfs(String folder) {
   final dir = Directory(folder);
   for (var file in dir.listSync()) {
