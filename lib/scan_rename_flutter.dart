@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:pdf_render/pdf_render.dart';
-import 'package:tesseract_ocr/tesseract_ocr.dart';
 import 'package:path/path.dart' as path;
 import 'package:intl/intl.dart';
 import 'dart:async';
