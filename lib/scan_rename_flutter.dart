@@ -13,18 +13,19 @@ const double windowHeightCm = 4.5;
 const double knickfalteTopCm = 10.0;
 const double knickfalteHeightCm = 2.0;
 
-// Keywords
+// keywords
 const List<String> aktenzeichenKeywords = ["Bitte bei"];
 const List<String> ausschlussListe = ["Postfach", "PLZ", "Postzentrum"];
+const Map<String, String> ocrCorrections = {"unaedeckte": "ungedeckte"};
 
-// logging
+// log func
 void logMessage(String message) {
   final timestamp = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
   final logFile = File('Logeinträge.txt');
   logFile.writeAsStringSync('$timestamp - $message\n', mode: FileMode.append);
 }
 
-// temp PNG löschen
+// temp löschen
 void deleteTempPng(String filePath) {
   final file = File(filePath);
   if (file.existsSync()) {
@@ -33,12 +34,17 @@ void deleteTempPng(String filePath) {
   }
 }
 
-// max zwischen Wörtern
+// rule
 String normalizeSpacing(String text) {
   return text.replaceAll(RegExp(r'\s{2,}'), ' ').trim();
 }
 
-// text aus fenster
+// auf kto prüfen
+bool isKontoauszug(PdfPageImage image) {
+  return image.height < 1500; // Bedingung für Kontoauszug
+}
+
+// text extrahieren
 Future<List<String>> extractTextFromWindow(PdfPageImage image, double dpi, String fileName, double topCm, double heightCm) async {
   try {
     final pixelsPerCm = dpi / 2.54;
@@ -54,11 +60,16 @@ Future<List<String>> extractTextFromWindow(PdfPageImage image, double dpi, Strin
     await tempFile.writeAsBytes(croppedImage.bytes);
     logMessage('Fensterbereich gespeichert: $tempPngPath');
 
-    final ocrResult = await TesseractOcr.extractText(tempPngPath);
+    final result = await Process.run('python3', ['-m', 'easyocr', tempPngPath]);
     deleteTempPng(tempPngPath);
 
-    logMessage('OCR-Ergebnisse im Fenster: $ocrResult');
-    return ocrResult.split('\n');
+    if (result.exitCode == 0) {
+      logMessage('OCR-Ergebnisse im Fenster: ${result.stdout}');
+      return result.stdout.toString().split('\n');
+    } else {
+      logMessage('Fehler bei der Textauswertung: ${result.stderr}');
+      return [];
+    }
   } catch (e) {
     logMessage('Fehler bei der Textauswertung: $e');
     return [];
@@ -81,7 +92,11 @@ String extractSender(List<String> results) {
 // az extrahieren
 String? extractCaseNumber(List<String> results) {
   for (var idx = 0; idx < results.length; idx++) {
-    final lineText = normalizeSpacing(results[idx]);
+    var lineText = normalizeSpacing(results[idx]);
+
+    for (var correction in ocrCorrections.entries) {
+      lineText = lineText.replaceAll(correction.key, correction.value);
+    }
 
     if (aktenzeichenKeywords.any((keyword) => lineText.startsWith(keyword))) {
       logMessage('Keyword für Aktenzeichen gefunden: $lineText');
@@ -95,7 +110,7 @@ String? extractCaseNumber(List<String> results) {
   return null;
 }
 
-// pdf verarbeiten
+// woerk
 Future<void> processPdf(String filePath) async {
   try {
     final fileName = path.basename(filePath);
@@ -103,7 +118,13 @@ Future<void> processPdf(String filePath) async {
     final page = await document.getPage(1);
     final image = await page.render();
 
-    final senderResults = await extractTextFromWindow(image!, 300, fileName, windowTopCm, windowHeightCm);
+    if (isKontoauszug(image!)) {
+      logMessage('Dokument erkannt als Kontoauszug: $filePath');
+      logMessage('Betreff: Kontoauszug');
+      return;
+    }
+
+    final senderResults = await extractTextFromWindow(image, 300, fileName, windowTopCm, windowHeightCm);
     final sender = extractSender(senderResults);
     logMessage('Gefundener Absender in $filePath: $sender');
 
@@ -114,7 +135,7 @@ Future<void> processPdf(String filePath) async {
   }
 }
 
-// current ordner verarbeiten
+// pdf verarbeiten
 void processPdfs(String folder) {
   final dir = Directory(folder);
   for (var file in dir.listSync()) {
