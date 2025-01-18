@@ -146,7 +146,7 @@ void processPdfs(String folder) {
   }
 }
 
-
+// eintritt
 void main() {
   final currentFolder = Directory.current.path;
   processPdfs(currentFolder);
