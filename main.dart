@@ -20,3 +20,10 @@ class ScanRenameApp extends StatelessWidget {
     );
   }
 }
+
+class ScanRenameScreen extends StatefulWidget {
+  const ScanRenameScreen({Key? key}) : super(key: key);
+
+  @override
+  _ScanRenameScreenState createState() => _ScanRenameScreenState();
+}
