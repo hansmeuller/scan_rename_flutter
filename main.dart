@@ -27,3 +27,9 @@ class ScanRenameScreen extends StatefulWidget {
   @override
   _ScanRenameScreenState createState() => _ScanRenameScreenState();
 }
+
+class _ScanRenameScreenState extends State<ScanRenameScreen> {
+  String status = "Bereit"; // Initiale Statusmeldung
+  bool isProcessing = false; // Flag für die Verarbeitung
+
+
