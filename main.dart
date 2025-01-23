@@ -32,4 +32,10 @@ class _ScanRenameScreenState extends State<ScanRenameScreen> {
   String status = "Bereit"; // Initiale Statusmeldung
   bool isProcessing = false; // Flag für die Verarbeitung
 
+  void startProcessing() async {
+    setState(() {
+      isProcessing = true;
+      status = "Verarbeitung gestartet...";
+    });
 
+    
