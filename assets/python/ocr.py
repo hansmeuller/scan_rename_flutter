@@ -12,3 +12,5 @@ if __name__ == "__main__":
         perform_ocr(sys.argv[1])
     else:
         print("No image path provided.")
+
+
