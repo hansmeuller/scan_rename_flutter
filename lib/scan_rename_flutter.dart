@@ -6,7 +6,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:image/image.dart' as img;
 
-// Definition der Scanbereiche in cm
+// scanbereich
 const double windowLeftCm = 2.0;
 const double windowTopCm = 4.5;
 const double windowWidthCm = 9.0;
@@ -15,19 +15,19 @@ const double windowHeightCm = 4.5;
 const double knickfalteTopCm = 10.0;
 const double knickfalteHeightCm = 2.0;
 
-// Keywords zur Erkennung von Aktenzeichen
+// Keywords
 const List<String> aktenzeichenKeywords = ["Bitte bei"];
 const List<String> ausschlussListe = ["Postfach", "PLZ", "Postzentrum"];
 const Map<String, String> ocrCorrections = {"unaedeckte": "ungedeckte"};
 
-// Logging-Funktion
+// log
 void logMessage(String message) {
   final timestamp = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
   final logFile = File('Logeinträge.txt');
   logFile.writeAsStringSync('$timestamp - $message\n', mode: FileMode.append);
 }
 
-// Temporäre PNG löschen
+// temp löschen
 void deleteTempPng(String filePath) {
   final file = File(filePath);
   if (file.existsSync()) {
@@ -36,17 +36,17 @@ void deleteTempPng(String filePath) {
   }
 }
 
-// Generelle Regel: Maximal ein Leerzeichen zwischen Wörtern
+// max Leerzeichen
 String normalizeSpacing(String text) {
   return text.replaceAll(RegExp(r'\s{2,}'), ' ').trim();
 }
 
-// Kontoauszug prüfen
+// check kto
 bool isKontoauszug(PdfPageImage image) {
   return image.height < 1500;
 }
 
-// Eindeutigen Dateinamen generieren
+// unicorn generieren
 String getUniqueFilename(String filePath) {
   var base = path.withoutExtension(filePath);
   var ext = path.extension(filePath);
@@ -59,7 +59,7 @@ String getUniqueFilename(String filePath) {
   return newPath;
 }
 
-// Text aus definiertem Fenster extrahieren
+// aus fenster extrahieren
 Future<List<String>> extractTextFromWindow(Uint8List imageBytes, double dpi, String fileName, double topCm, double heightCm) async {
   try {
     final img.Image? image = img.decodeImage(imageBytes);
@@ -94,7 +94,7 @@ Future<List<String>> extractTextFromWindow(Uint8List imageBytes, double dpi, Str
   }
 }
 
-// PDF verarbeiten
+// verarbeiten
 Future<void> processPdf(String filePath) async {
   try {
     final fileName = path.basename(filePath);
@@ -119,7 +119,7 @@ Future<void> processPdf(String filePath) async {
     logMessage('Gefundener Absender in $filePath: $sender');
 
     final caseNumberResults = await extractTextFromWindow(imageBytes, 300, fileName, knickfalteTopCm, knickfalteHeightCm);
-    final subjectOrCase = caseNumberResults.isNotEmpty ? caseNumberResults.first : "Kein relevanter Eintrag gefunden";
+    final subjectOrCase = caseNumberResults.isNotEmpty ? caseNumberResults.first : "Kein Eintrag gefunden";
     logMessage('Gefundener Betreff oder Aktenzeichen in $filePath: $subjectOrCase');
 
     final newFileName = normalizeSpacing('$sender_$subjectOrCase.pdf').replaceAll('__', '_');
