@@ -59,7 +59,7 @@ String getUniqueFilename(String filePath) {
   return newPath;
 }
 
-// aus fenster extrahieren
+// aus def fenster extrahieren
 Future<List<String>> extractTextFromWindow(Uint8List imageBytes, double dpi, String fileName, double topCm, double heightCm) async {
   try {
     final img.Image? image = img.decodeImage(imageBytes);
@@ -131,7 +131,7 @@ Future<void> processPdf(String filePath) async {
   }
 }
 
-// PDFs im Ordner verarbeiten
+// pdfs verarbeiten
 void processPdfs(String folder) {
   final dir = Directory(folder);
   for (var file in dir.listSync()) {
@@ -142,7 +142,7 @@ void processPdfs(String folder) {
   }
 }
 
-// Hauptprogramm
+
 void main() {
   final currentFolder = Directory.current.path;
   processPdfs(currentFolder);
