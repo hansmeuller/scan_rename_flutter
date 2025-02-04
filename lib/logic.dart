@@ -9,7 +9,7 @@ Future<void> setupPythonEnvironment() async {
   if (!pythonDir.existsSync()) {
     pythonDir.createSync(recursive: true);
 
-    // Extrahiere das Python-Skript (ocr.py) aus den Assets
+    // extrahiere
     final ocrScript = await rootBundle.loadString('assets/python/ocr.py');
     final ocrFile = File('${pythonDir.path}/ocr.py');
     await ocrFile.writeAsString(ocrScript);
@@ -24,7 +24,7 @@ Future<String> performOcr(String imagePath) async {
     final pythonDir = Directory('${appDir.path}/python');
     final ocrScriptPath = '${pythonDir.path}/ocr.py';
 
-    // Python-Prozess ausführen
+    // python ausführen
     final result = await Process.run(
       'python3',
       [ocrScriptPath, imagePath],
