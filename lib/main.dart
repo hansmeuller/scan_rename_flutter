@@ -31,7 +31,7 @@ class _ScanRenameScreenState extends State<ScanRenameScreen> {
   void startProcessing() async {
     setState(() {
       isProcessing = true;
-      status = "Verarbeitung gestartet...";
+      status = "Verarbeitung gestartet ";
     });
 
     try {
