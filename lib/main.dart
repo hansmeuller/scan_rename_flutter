@@ -34,6 +34,7 @@ class _ScanRenameScreenState extends State<ScanRenameScreen> {
       status = "Verarbeitung gestartet ";
     });
 
+    
     try {
       final currentFolder = Directory.current.path;
       await processPdfsWithProgress(
