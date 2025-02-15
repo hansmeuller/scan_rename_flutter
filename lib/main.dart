@@ -87,7 +87,7 @@ class _ScanRenameScreenState extends State<ScanRenameScreen> {
   }
 }
 //todo
-  //weitere tests
+  //tests
   //gui
   //erweiterungen
-    //speziefische ordner auswahl
+    //optionale speziefische ordner auswahl
