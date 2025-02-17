@@ -91,3 +91,4 @@ class _ScanRenameScreenState extends State<ScanRenameScreen> {
   //gui
   //erweiterungen
     //optionale speziefische ordner auswahl
+      //automatisiere zielordner erstellen
