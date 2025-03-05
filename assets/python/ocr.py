@@ -7,9 +7,9 @@ from PyPDF2 import PdfReader
 # initialisieren
 reader = easyocr.Reader(['de'], gpu=False)
 
-# Log-Funktion
+# Log
 def log_message(message):
-    print(message)  # Später durch Datei-Logging ersetzen
+    print(message)  # später logging
 
 # umwandeln und verarbeiten
 def process_pdf(pdf_path):
