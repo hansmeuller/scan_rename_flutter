@@ -28,7 +28,7 @@ def process_pdf(pdf_path):
     except Exception as e:
         log_message(f"Fehler bei der Verarbeitung von {pdf_path}: {e}")
 
-# im Ordner verarbeiten
+# current
 def process_pdfs(folder_path):
     for file_name in os.listdir(folder_path):
         if file_name.lower().endswith(".pdf"):
