@@ -23,7 +23,7 @@ def process_pdf(pdf_path):
             text_results = reader.readtext(image)
             extracted_text = " ".join([text for _, text, _ in text_results])
 
-            log_message(f"OCR-Ergebnisse für {pdf_path} - Seite {i+1}: {extracted_text}")
+            log_message(f"Ergebnisse für {pdf_path} - Seite {i+1}: {extracted_text}")
 
     except Exception as e:
         log_message(f"Fehler bei der Verarbeitung von {pdf_path}: {e}")
