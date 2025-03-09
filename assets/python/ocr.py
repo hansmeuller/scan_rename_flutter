@@ -38,7 +38,7 @@ def process_pdfs(folder_path):
 # start
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Bitte einen Ordner oder eine PDF-Datei angeben.")
+        print("Bitte einen Ordner oder eine PDF angeben.")
         sys.exit(1)
 
     input_path = sys.argv[1]
@@ -48,4 +48,4 @@ if __name__ == "__main__":
     elif os.path.isfile(input_path) and input_path.lower().endswith(".pdf"):
         process_pdf(input_path)
     else:
-        print("Ungültiger Pfad oder keine PDF-Datei.")
+        print("Ungültiger Pfad oder keine PDF.")
