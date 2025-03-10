@@ -48,4 +48,4 @@ if __name__ == "__main__":
     elif os.path.isfile(input_path) and input_path.lower().endswith(".pdf"):
         process_pdf(input_path)
     else:
-        print("Ungültiger Pfad oder keine PDF.")
+        print("Ungültiger Pfad oder keine PDF")
