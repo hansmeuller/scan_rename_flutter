@@ -16,7 +16,7 @@ def process_pdf(pdf_path):
     try:
         images = convert_from_path(pdf_path, dpi=300)
         if not images:
-            log_message(f"nix extrahiert für {pdf_path}")
+            log_message(f"nichts extrahiert für {pdf_path}")
             return
 
         for i, image in enumerate(images):
