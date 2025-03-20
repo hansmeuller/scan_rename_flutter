@@ -35,7 +35,7 @@ def process_pdfs(folder_path):
             pdf_path = os.path.join(folder_path, file_name)
             process_pdf(pdf_path)
 
-# start
+# main
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Bitte einen Ordner angeben")
